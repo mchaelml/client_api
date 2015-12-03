@@ -5,6 +5,6 @@
 
 <table>
   <tr ng-repeat="book in books">
-    <td>{{book.id}}</td><td>{{ book.volumeInfo.title }}</td><td><a href="#detail/{{book.id}}/{{book.volumeInfo.title}}">view</a></td>
+    <td>{{book.id}}</td><td>{{ book.volumeInfo.title }}</td><td>{{book.volumeInfo.authors}}</td><td>{{book.selfLink}}</td><td><a href="#detail/{{book.id}}/{{book.volumeInfo.title}}">view</a></td>
   </tr>
 </table>

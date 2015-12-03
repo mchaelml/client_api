@@ -10,7 +10,7 @@ myApp.config( ['$routeProvider', function($routeProvider) {
 		  templateUrl: 'templates/search.html',
       controller: 'searchController'
 		})
-    .when('/detail/:id/:volumeInfo', {
+    .when('/detail/:id/:volumeInfo/', {
       templateUrl: 'templates/detail.html',
       controller: 'detailController'
     })
@@ -35,7 +35,7 @@ myApp.controller('searchController', function($scope, $http) {
     if ($event.which == 13) { // enter key presses
       var search = $scope.searchTerm
       console.log(search)
-      var url = 'https://www.googleapis.com/books/v1/volumes?maxResults=40&fields=items(id,volumeInfo(title))&q='+search
+      var url = 'https://www.googleapis.com/books/v1/volumes?maxResults=40&fields=items(id,selfLink,volumeInfo(title),volumeInfo(authors))&q='+search
       $http.get(url).success(function(response) {
         console.log(response)
         $scope.books = response.items
@@ -49,19 +49,29 @@ myApp.controller('detailController', function($scope, $routeParams) {
   $scope.message = 'This is the detail screen'
   $scope.id = $routeParams.id
   $scope.title = $routeParams.volumeInfo
+  //$scope.authors = $routeParams.volumeInfo.authors
+  $scope.link = $routeParams.selfLink
   console.log($scope.title)
   //$scope.stuff = {
     //id : $scope.id,
     //title : $scope.title
   //}
-  $scope.stuff = {
-    id : $routeParams.id,
-    title : $routeParams.volumeInfo
-  }
-  console.log("stuff:"+$scope.stuff)
+  //var stuff = {
+    //id : $routeParams.id,
+    //title : $routeParams.volumeInfo
+  //}
+  
+  //console.log("stuff:"+JSON.stringify(stuff))
   $scope.addToFavourites = function(stuff) {
-    console.log('adding: '+stuff+' to favourites.')
-    localStorage.setItem('stuff',stuff)
+    var stuff = {
+    id : $routeParams.id,
+    title : $routeParams.volumeInfo,
+    //authors: $routeParams.volumeInfo.authors,
+    link: $routeParams.selfLink
+    }
+    console.log('adding: '+JSON.stringify(stuff)+' to favourites.')
+    localStorage.setItem(stuff,JSON.stringify(stuff))
+    console.log(localStorage.getItem(stuff))
   }
   //$scope.addToFavourites = function(id) {
     //console.log('adding: '+id+' to favourites.')
